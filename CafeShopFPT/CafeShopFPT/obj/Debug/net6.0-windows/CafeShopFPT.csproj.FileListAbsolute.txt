@@ -1,0 +1,14 @@
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT.csproj.AssemblyReference.cache
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\MainWindow.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\AccountActionView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\AdminView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\BillDetailView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\BillView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\CategoryActionView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\ConfirmPasswordView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\FoodActionView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\ManagerView.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\App.g.cs
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT_MarkupCompile.cache
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT_MarkupCompile.lref
+E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\Views\LoginView.g.cs

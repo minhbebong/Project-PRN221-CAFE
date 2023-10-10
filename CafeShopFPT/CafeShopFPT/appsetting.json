@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DbConStr": "server=DESKTOP-PRU915R; database=QuanLyQuanCafe; uid=sa; pwd=123456Sa; Integrated Security=True; TrustServerCertificate=True"
+  }
+}

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DAO\AccountsDao\" />
+    <Folder Include="DAO\BillDao\" />
+    <Folder Include="DAO\BillInfoDao\" />
+    <Folder Include="DAO\CategoryDao\" />
+    <Folder Include="DAO\FoodDao\" />
+    <Folder Include="DAO\TableFoodDao\" />
+    <Folder Include="DAO\RoleDao\" />
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\AccountAction\" />
+    <Folder Include="ViewModels\AdminScreen\" />
+    <Folder Include="ViewModels\BillDetailScreen\" />
+    <Folder Include="ViewModels\LoginScreen\" />
+    <Folder Include="ViewModels\ManagerScreen\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="ClosedXML" Version="0.100.3" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.22" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+
+</Project>
