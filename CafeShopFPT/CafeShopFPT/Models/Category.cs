@@ -10,8 +10,8 @@ namespace CafeShopFPT.Models
             Foods = new HashSet<Food>();
         }
 
-        public string CategoryId { get; set; }
-        public string Name { get; set; }
+        public string CategoryId { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         public virtual ICollection<Food> Foods { get; set; }
     }

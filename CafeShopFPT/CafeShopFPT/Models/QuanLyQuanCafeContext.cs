@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace CafeShopFPT.Models
 {
@@ -16,20 +18,25 @@ namespace CafeShopFPT.Models
         {
         }
 
-        public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<Bill> Bills { get; set; }
-        public virtual DbSet<BillInfo> BillInfos { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Food> Foods { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<TableFood> TableFoods { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; } = null!;
+        public virtual DbSet<Bill> Bills { get; set; } = null!;
+        public virtual DbSet<BillInfo> BillInfos { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Food> Foods { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<TableFood> TableFoods { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-PRU915R;database=QuanLyQuanCafe;Integrated security=true;TrustServerCertificate=true");
+                var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+                IConfigurationRoot configuration = builder.Build();
+
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DbConStr"));
             }
         }
 
