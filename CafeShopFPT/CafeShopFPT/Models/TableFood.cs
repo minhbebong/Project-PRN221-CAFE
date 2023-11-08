@@ -10,8 +10,8 @@ namespace CafeShopFPT.Models
             Bills = new HashSet<Bill>();
         }
 
-        public string TableId { get; set; }
-        public string Name { get; set; }
+        public string TableId { get; set; } = null!;
+        public string Name { get; set; } = null!;
         public bool Status { get; set; }
         public bool? InUse { get; set; }
 

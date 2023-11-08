@@ -5,7 +5,7 @@ namespace CafeShopFPT.Models
 {
     public partial class Bill
     {
-        public string BillId { get; set; }
+        public string BillId { get; set; } = null!;
         public DateTime DateCheckIn { get; set; }
         public DateTime? DateCheckOut { get; set; }
         public string TableId { get; set; }
