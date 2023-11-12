@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DAO\AccountsDao\" />
     <Folder Include="DAO\BillDao\" />
     <Folder Include="DAO\BillInfoDao\" />
     <Folder Include="DAO\CategoryDao\" />
