@@ -7,8 +7,37 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginView">
-
     <Grid>
-        
+        <StackPanel Background="#FFF3E0E0">
+            <Label FontSize="30" Height="200" Width="450" HorizontalAlignment="Center" HorizontalContentAlignment="Center">CAFFE SHOP</Label>
+            <Image></Image>
+            <Line
+            Width="480"
+            Height="5"
+            Margin="10"
+            Opacity="0.5"
+            Stroke="Black"
+            StrokeThickness="1"
+            X1="30"
+            X2="450"
+            Y1="0"
+            Y2="0" />
+            <DockPanel Width="400" Height="50">
+                <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                VerticalAlignment="Center"
+                Kind="Account" />
+                <TextBox
+                Width="350"
+                Height="40"
+                materialDesign:HintAssist.Hint="Username"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                materialDesign:TransitionAssist.DisableTransitions="True"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+        </StackPanel>    
     </Grid>
+    
 </Page>
