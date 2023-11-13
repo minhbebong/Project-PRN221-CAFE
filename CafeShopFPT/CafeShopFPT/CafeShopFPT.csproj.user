@@ -54,6 +54,9 @@
     <Page Update="Views\ConfirmPasswordView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\FoodActionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\LoginView.xaml">
       <SubType>Designer</SubType>
     </Page>

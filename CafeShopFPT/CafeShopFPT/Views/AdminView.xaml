@@ -1,14 +1,691 @@
-﻿<Page x:Class="CafeShopFPT.Views.AdminView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CafeShopFPT.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="AdminView">
-
+﻿<Window
+    x:Class="CafeShopFPT.Views.AdminView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:adminscreen="clr-namespace:CafeShopFPT.ViewModels.AdminScreen"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CafeShopFPT.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="System Manager"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance Type=adminscreen:AdminVM}"
+    Icon="/Views/Logo/icon.png"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <TabControl
+            materialDesign:ColorZoneAssist.Background="Crimson"
+            materialDesign:ColorZoneAssist.Foreground="White"
+            materialDesign:ColorZoneAssist.Mode="Custom"
+            SelectedValue="{Binding SelectedTab}"
+            Style="{StaticResource MaterialDesignFilledTabControl}">
+            <TabItem x:Name="tpFood" Header="FOOD">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView
+                        x:Name="lsvFood"
+                        ItemsSource="{Binding DisplayFoodList}"
+                        VirtualizingStackPanel.IsVirtualizing="False">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Picture">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Width="100"
+                                                Height="100"
+                                                Source="{Binding ImgPath}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Name">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding FoodName}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Category">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Category.Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Price">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Price, StringFormat={}{0:n0}đ}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Options">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    x:Name="btnEditFood"
+                                                    Margin="10"
+                                                    Background="#FF2BBE4F"
+                                                    Command="{Binding DataContext.EditFoodCommand, ElementName=lsvFood}"
+                                                    CommandParameter="{Binding ElementName=btnEditFood}"
+                                                    Content="{materialDesign:PackIcon Edit}"
+                                                    ToolTip="Edit" />
+                                                <Button
+                                                    x:Name="btnRemoveFood"
+                                                    Margin="10"
+                                                    Background="#FFD21A1A"
+                                                    Command="{Binding DataContext.RemoveFoodCommand, ElementName=lsvFood}"
+                                                    CommandParameter="{Binding ElementName=btnRemoveFood}"
+                                                    Content="{materialDesign:PackIcon Trash}"
+                                                    ToolTip="Remove" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Grid.Column="1">
+                        <materialDesign:Card
+                            Padding="8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Search" />
+                        </materialDesign:Card>
+                        <TextBox
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Name"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding SearchFoodQuery, UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox
+                            Margin="8"
+                            materialDesign:ComboBoxAssist.MaxLength="2"
+                            materialDesign:HintAssist.Hint="Category"
+                            materialDesign:HintAssist.HintOpacity="0.5"
+                            DisplayMemberPath="Name"
+                            IsEditable="True"
+                            ItemsSource="{Binding CategoriesList}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            SelectedValuePath="CategoryId" />
+                        <Button
+                            Margin="8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding ResetFoodFilterCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Reset Search Condition">
+                            <TextBlock Text="RESET" />
+                        </Button>
+                        <materialDesign:Card
+                            Margin="0,100,0,0"
+                            Padding="8,8,8,8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Action" />
+                        </materialDesign:Card>
+                        <Button
+                            Margin="8,8,8,8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding AddFoodCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            <TextBlock Text="ADD FOOD" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tpCategory" Header="CATEGORY">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListView
+                        x:Name="lsvCategory"
+                        ItemsSource="{Binding CategoriesList, UpdateSourceTrigger=PropertyChanged}"
+                        VirtualizingStackPanel.IsVirtualizing="False">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="300" Header="Name">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Options">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    x:Name="btnEditCategory"
+                                                    Margin="10"
+                                                    Background="#FF2BBE4F"
+                                                    Command="{Binding DataContext.EditCategoryCommand, ElementName=lsvCategory}"
+                                                    CommandParameter="{Binding ElementName=btnEditCategory}"
+                                                    Content="{materialDesign:PackIcon Edit}"
+                                                    ToolTip="Edit" />
+                                                <Button
+                                                    x:Name="btnRemoveCategory"
+                                                    Margin="10"
+                                                    Background="#FFD21A1A"
+                                                    Command="{Binding DataContext.RemoveCategoryCommand, ElementName=lsvCategory}"
+                                                    CommandParameter="{Binding ElementName=btnRemoveCategory}"
+                                                    Content="{materialDesign:PackIcon Trash}"
+                                                    ToolTip="Remove" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
+                    <StackPanel Grid.Column="1">
+                        <materialDesign:Card
+                            Padding="8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Action" />
+                        </materialDesign:Card>
+                        <TextBox
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Name"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Margin="8,8,8,8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding AddCategoryCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            <TextBlock Text="ADD CATEGORY" />
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tpTable" Header="TABLE">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        x:Name="TableLayout"
+                        Grid.Row="1"
+                        Margin="5"
+                        BorderBrush="Black"
+                        BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsFlipped, ElementName=layoutFlipper}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsFlipped, ElementName=layoutFlipper}" Value="True">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                            <WrapPanel
+                                x:Name="wpTables"
+                                Grid.Row="1"
+                                materialDesign:ElevationAssist.Elevation="Dp16"
+                                Orientation="Horizontal">
+                      
+
+                                <ItemsControl x:Name="TableList" ItemsSource="{Binding TablesList, Mode=TwoWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <Style TargetType="{x:Type Button}">
+
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding InUse}" Value="True">
+                                                                <Setter Property="Background" Value="#FF45BB34" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding InUse}" Value="False">
+                                                                <Setter Property="Background" Value="#FFCB5E5E" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+
+                                                </Grid.Resources>
+                                                <Button
+                                                    x:Name="TableButton"
+                                                    Width="145"
+                                                    Height="145"
+                                                    Margin="8"
+                                                    BorderBrush="Black"
+                                                    BorderThickness="1"
+                                                    Command="{Binding Path=DataContext.TableSelectCommand, ElementName=TableList}"
+                                                    CommandParameter="{Binding ElementName=TableButton}"
+                                                    Foreground="White">
+
+
+                                                    <Grid>
+                                                        <Image Source="/Views/Logo/TableLogo (Custom).png" />
+                                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <StackPanel.Resources>
+
+                                                                <Style BasedOn="{StaticResource MaterialDesignSubtitle1TextBlock}" TargetType="{x:Type TextBlock}">
+                                                                    <Setter Property="Text" Value="Inactive" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding InUse}" Value="True">
+                                                                            <Setter Property="Text" Value="Active" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+
+
+                                                            </StackPanel.Resources>
+                                                            <TextBlock
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="15"
+                                                                Text="{Binding Path=Name}" />
+                                                            <TextBlock
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="15" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </WrapPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <StackPanel Grid.Column="2">
+
+
+                        <materialDesign:Card
+                            Margin="0,0,0,0"
+                            Padding="8,8,8,8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Action" />
+                        </materialDesign:Card>
+                        <StackPanel Margin="8" Background="#FFF7F7D6">
+                            <TextBox
+                                Margin="8"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Table Name"
+                                FontSize="16"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding AddTableName, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button
+                                Margin="8,8,8,8"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Background="#FFD9A55D"
+                                Command="{Binding AddTableCommand}"
+                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                <TextBlock Text="ADD TABLE" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Margin="8" Background="#FFF7F7D6">
+                            <TextBlock
+                                Margin="5"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Status" />
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedTable.InUse}" Value="True">
+                                                <Setter Property="Text" Value="Active" />
+                                                <Setter Property="Foreground" Value="Green" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SelectedTable.InUse}" Value="False">
+                                                <Setter Property="Text" Value="Inactive" />
+                                                <Setter Property="Foreground" Value="Red" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <ToggleButton
+                                    x:Name="ToggleInuse"
+                                    Width="60"
+                                    Margin="8"
+                                    IsChecked="{Binding SelectedTable.InUse}"
+                                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                    ToolTip="MaterialDesignSwitchToggleButton with Custom Track Background">
+                                    <materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+                                        <SolidColorBrush Color="Green" />
+                                    </materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+                                    <materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+                                        <SolidColorBrush Color="Red" />
+                                    </materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+                                </ToggleButton>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="17"
+                                    FontWeight="Bold" />
+                            </StackPanel>
+                            <TextBox
+                                Margin="8"
+                                VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="Table Name"
+                                FontSize="16"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Text="{Binding SelectedTable.Name}" />
+                            <Button
+                                Margin="8"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Background="#FF4DD234"
+                                Command="{Binding UpdateTableCommand}"
+                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                <TextBlock Text="UPDATE TABLE" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Margin="8" Background="#FFF7F7D6">
+
+                            <Button
+                                Margin="8,8,8,8"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Background="Red"
+                                Command="{Binding RemoveTableCommand}"
+                                Style="{StaticResource MaterialDesignRaisedButton}">
+                                <TextBlock Text="REMOVE TABLE" />
+                            </Button>
+                        </StackPanel>
+
+
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+            <TabItem x:Name="tpBill" Header="BILL MANAGER">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="lsvBill" ItemsSource="{Binding BillList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding BillId}" />
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Checkin">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding DateCheckIn, StringFormat={}{0:yyyy/MM/dd HH:mm tt}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Checkout">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding DateCheckOut, StringFormat={}{0:yyyy/MM/dd HH:mm tt}}" />
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Table">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Table.Name}" />
+
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Staff">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Account.DisplayName}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Total">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Total, StringFormat={}{0:n0}đ}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Detail">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    x:Name="btnViewBillDetail"
+                                                    Margin="10"
+                                                    Background="#FF2BBE4F"
+                                                    Command="{Binding DataContext.ViewBillDetailCommand, ElementName=lsvBill}"
+                                                    CommandParameter="{Binding ElementName=btnViewBillDetail}"
+                                                    Content="{materialDesign:PackIcon Details}"
+                                                    ToolTip="View Detail" />
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="8"
+                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                            Text="Revenue (VNĐ): " />
+                        <TextBlock
+                            Margin="8"
+                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                            Text="{Binding Revenue, StringFormat={}{0:n0}đ}" />
+                    </StackPanel>
+                    <StackPanel Grid.RowSpan="2" Grid.Column="1">
+                        <materialDesign:Card
+                            Padding="8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Search" />
+                        </materialDesign:Card>
+                        <TextBox
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Bill ID"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding SearchBillId, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            materialDesign:HintAssist.Hint="Account Name"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding SearchAccountName, UpdateSourceTrigger=PropertyChanged}" />
+                        <DatePicker
+                            Margin="8"
+                            materialDesign:HintAssist.Hint="From Date"
+                            SelectedDate="{Binding FromBillDate, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:yyyy/MM/dd}}"
+                            SelectedDateFormat="Short"
+                            Style="{StaticResource MaterialDesignFilledDatePicker}" />
+                        <DatePicker
+                            Margin="8"
+                            materialDesign:HintAssist.Hint="To Date"
+                            SelectedDate="{Binding ToBillDate, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:yyyy/MM/dd}}"
+                            SelectedDateFormat="Short"
+                            Style="{StaticResource MaterialDesignFilledDatePicker}" />
+                        <Button
+                            Margin="8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding SearchBillCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Search">
+                            <TextBlock Text="SEARCH" />
+                        </Button>
+                        <materialDesign:Card
+                            Margin="0,80,0,0"
+                            Padding="8,8,8,8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Action" />
+                        </materialDesign:Card>
+                        <Button
+                            Margin="8,8,8,8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Background="#FF42A31F"
+                            Command="{Binding ExportToExcelCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Text="EXPORT TO EXCEL" />
+                                <materialDesign:PackIcon
+                                    Width="20"
+                                    Height="20"
+                                    Kind="FileExcel" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tpAccount" Header="ACCOUNT">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="lsvAccount" ItemsSource="{Binding AccountList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Avatar">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Width="100"
+                                                Height="100"
+                                                Source="{Binding Avatar}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="200" Header="Email">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding Email}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Display Name">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="18" Text="{Binding DisplayName}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Options">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    x:Name="btnEditAccount"
+                                                    Margin="10"
+                                                    Background="#FF2BBE4F"
+                                                    Command="{Binding DataContext.UpdateAccountCommand, ElementName=lsvAccount}"
+                                                    CommandParameter="{Binding ElementName=btnEditAccount}"
+                                                    Content="{materialDesign:PackIcon Edit}"
+                                                    ToolTip="Edit" />
+                                                <Button
+                                                    x:Name="btnRemoveAccount"
+                                                    Margin="10"
+                                                    Background="#FFD21A1A"
+                                                    Command="{Binding DataContext.RemoveAccountCommand, ElementName=lsvAccount}"
+                                                    CommandParameter="{Binding ElementName=btnRemoveAccount}"
+                                                    Content="{materialDesign:PackIcon Trash}"
+                                                    ToolTip="Remove" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
+                    <StackPanel Grid.Column="1">
+                        <materialDesign:Card
+                            Margin="8"
+                            Padding="8,8,8,8"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="Action" />
+                        </materialDesign:Card>
+                        <Button
+                            Margin="8,8,8,8"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding AddAccountCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}">
+                            <TextBlock Text="ADD ACCOUNT" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
     </Grid>
-</Page>
+</Window>

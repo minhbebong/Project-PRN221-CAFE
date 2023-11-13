@@ -1,5 +1,9 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Presentation;
+using CafeShopFPT.DAO.BillDao;
+using CafeShopFPT.ViewModels.ManagerScreen;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,19 +14,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CafeShopFPT.Views
 {
     /// <summary>
-    /// Interaction logic for BillView.xaml
+    /// Interaction logic for BillManagerView.xaml
     /// </summary>
-    public partial class BillView : Page
+    public partial class BillView : Window
     {
         public BillView()
         {
             InitializeComponent();
+            this.DataContext = new BillViewVM();
         }
+
     }
 }

@@ -213,7 +213,7 @@ namespace CafeShopFPT.ViewModels.AccountAction
                     // Open document
                     string filepath = dlg.FileName; // Stores Original Path in Textbox
                     string name = System.IO.Path.GetFileName(filepath);
-                    string destinationPath = FileUtil.GetDestinationPath(name, "Images\\Avatars");
+                    string destinationPath = FileUlti.GetDestinationPath(name, "Images\\Avatars");
 
                     File.Copy(filepath, destinationPath, true);
 

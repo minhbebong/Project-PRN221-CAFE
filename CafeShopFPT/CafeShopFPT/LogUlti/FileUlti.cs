@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CafeShopFPT.LogUlti
 {
-    public class FileUtil
+    public class FileUlti
     {
         public static string GetDestinationPath(string filename, string foldername)
         {

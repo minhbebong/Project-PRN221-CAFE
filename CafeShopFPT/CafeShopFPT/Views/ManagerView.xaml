@@ -1,14 +1,775 @@
-﻿<Page x:Class="CafeShopFPT.Views.ManagerView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CafeShopFPT.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ManagerView">
+﻿<Window
+    x:Class="CafeShopFPT.Views.ManagerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CafeShopFPT.Views"
+    xmlns:local1="clr-namespace:Microsoft.EntityFrameworkCore.Storage.ValueConversion;assembly=Microsoft.EntityFrameworkCore"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:CafeShopFPT.ViewModels"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="ManagerView"
+    Width="1200"
+    Height="800"
+    Background="SeaShell"
+    Icon="/Views/Logo/icon.png"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+    <Window.Visibility>
+        <Binding
+            Converter="{StaticResource BooleanToVisibilityConverter}"
+            Mode="TwoWay"
+            Path="WindowVisiable" />
+    </Window.Visibility>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter" />
+        <!--  A brush for flat 3D panel borders  -->
+        <LinearGradientBrush x:Key="Flat3DBorderBrush" StartPoint="0.499,0" EndPoint="0.501,1">
+            <GradientStop Offset="0" Color="Black" />
+            <GradientStop Offset="0.01" Color="Black" />
+            <GradientStop Offset="0.99" Color="Black" />
+            <GradientStop Offset="1" Color="Black" />
+        </LinearGradientBrush>
+        <DataTemplate x:Key="CellTemplateForText">
+            <Border
+                Margin="-8,-3,-4.4,-2"
+                BorderBrush="Black"
+                BorderThickness="0,0,0.5,0.5">
+                <StackPanel Margin="6,2,6,2">
+                    <TextBlock Text="" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CellTemplateForQuantity">
+            <Border Margin="-8,-3,-4.4,-2">
+                <Grid>
+                    <xctk:IntegerUpDown
+                        Name="QuantityUpDown"
+                        Maximum="99"
+                        Minimum="0"
+                        ShowButtonSpinner="False"
+                        Value="0" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="MyItemContainerStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style x:Key="MyHeaderContainerStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+
+        </Style>
+    </Window.Resources>
+
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.3*" />
+
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="menuRow" Height="30" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.ColumnSpan="3">
+            <materialDesign:Card DockPanel.Dock="Top">
+                <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="30" Background="Tan">
+                    <MenuItem Command="{Binding OpenProfileOptionsCommand}" Header="Profile" />
+                    <MenuItem
+                        Command="{Binding OpenAdminOptionsCommand}"
+                        Header="Manager"
+                        Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <MenuItem Command="{Binding OpenViewBillsOptionsCommand}" Header="View Bill" />
+                </Menu>
+            </materialDesign:Card>
+        </DockPanel>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,0,545,630">
+
+            <StackPanel
+                x:Name="takeawayTitle"
+                Width="300"
+                Height="100"
+                Margin="10"
+                HorizontalAlignment="Left"
+                Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFlipped, ElementName=layoutFlipper}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFlipped, ElementName=layoutFlipper}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="40"
+                        Height="40"
+                        Kind="FoodTakeoutBox" />
+                    <TextBlock
+                        FontSize="30"
+                        FontStyle="Italic"
+                        FontWeight="Bold"
+                        Text="Takeaway Bill:  " />
+                </StackPanel>
+                <TextBlock FontSize="30" Text="{Binding SelectedTakeaway.BillId, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel
+                x:Name="tableTitle"
+                Width="500"
+                Height="100"
+                Margin="10"
+                HorizontalAlignment="Left"
+                Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFlipped, ElementName=layoutFlipper}" Value="False">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFlipped, ElementName=layoutFlipper}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="40"
+                        Height="40"
+                        Kind="TablePicnic" />
+                    <TextBlock
+                        FontSize="30"
+                        FontStyle="Italic"
+                        FontWeight="Bold"
+                        Text="Table Name:  " />
+                    <TextBlock FontSize="30" Text="{Binding SelectedTable.Name, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedTable.Status}" Value="True">
+                                    <Setter Property="Foreground" Value="#FF45BB34" />
+                                    <Setter Property="Text" Value="In use" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedTable.Status}" Value="False">
+                                    <Setter Property="Foreground" Value="#FFCB5E5E" />
+                                    <Setter Property="Text" Value="Empty" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock
+                        FontSize="16"
+                        FontStyle="Italic"
+                        FontWeight="Bold"
+                        Text="Status:  " />
+                    <TextBlock FontSize="16" />
+                </StackPanel>
+            </StackPanel>
+
+
+        </Grid>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+
+
+            <materialDesign:Flipper
+                x:Name="layoutFlipper"
+                Width="200"
+                Margin="473,30,5,10"
+                materialDesign:FlipperAssist.UniformCornerRadius="20"
+                IsFlipped="{Binding IsTakeaway, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+
+
+                <materialDesign:Flipper.FrontContent>
+                    <Button
+                        Height="70"
+                        Margin="8"
+                        Background="#FFEDD562"
+                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                        Content="TABLES"
+                        FontSize="25"
+                        Foreground="Brown"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
+                </materialDesign:Flipper.FrontContent>
+                <materialDesign:Flipper.BackContent>
+                    <Button
+                        Height="70"
+                        Margin="8"
+                        Background="#FFEDD562"
+                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                        Content="TAKEAWAY"
+                        FontSize="20"
+                        Foreground="Brown"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
+                </materialDesign:Flipper.BackContent>
+            </materialDesign:Flipper>
+            <Button
+                Width="200"
+                Margin="232,91,223,3"
+                Background="#FFEBB50B"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Command="{Binding RemoveTakeawayCommand}"
+                FontSize="18"
+                Foreground="Black"
+                Visibility="{Binding ElementName=layoutFlipper, Path=IsFlipped, Converter={StaticResource VisibleIfTrueConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Minus" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="Showcard Gothic"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="REMOVE TAKEAWAY" />
+                </StackPanel>
+
+            </Button>
+            <Button
+                Width="200"
+                Margin="232,55,223,39"
+                Background="#FFEBB50B"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Command="{Binding AddTakeawayCommand}"
+                FontSize="18"
+                Foreground="Black"
+                Visibility="{Binding ElementName=layoutFlipper, Path=IsFlipped, Converter={StaticResource VisibleIfTrueConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="PlusThick" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="Showcard Gothic"
+                        FontSize="16"
+                        FontWeight="Normal"
+                        Text="ADD TAKEAWAY" />
+                </StackPanel>
+            </Button>
+
+            <Border
+                x:Name="TakeawayLayout"
+                Grid.Row="1"
+                Margin="5"
+                BorderBrush="Black"
+                BorderThickness="1">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFlipped, ElementName=layoutFlipper}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsFlipped, ElementName=layoutFlipper}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                    <WrapPanel
+                        x:Name="wpTakeaway"
+                        Grid.Row="1"
+                        materialDesign:ElevationAssist.Elevation="Dp16"
+                        Orientation="Horizontal">
+
+                        <WrapPanel.Background>
+                            <ImageBrush ImageSource="E:\Downloads\MyCafeShop_PRN221-main\MyCafeShop_PRN221-main\MyCafeShop\Views\background.png" Stretch="Fill" />
+                        </WrapPanel.Background>
+
+                        <ItemsControl x:Name="TakeawayList" ItemsSource="{Binding TakeawayList, Mode=TwoWay}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <Grid>
+
+                                        <Button
+                                            x:Name="TakeAwayButton"
+                                            Width="145"
+                                            Height="145"
+                                            Margin="10"
+                                            Background="Purple"
+                                            BorderBrush="Black"
+                                            BorderThickness="1"
+                                            Command="{Binding Path=DataContext.TakeawaySelectCommand, ElementName=TableList}"
+                                            CommandParameter="{Binding ElementName=TakeAwayButton}"
+                                            Foreground="White">
+
+
+                                            <Grid>
+                                                <Image Source="/Views/Logo/TableLogo (Custom).png" />
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        Text="Takeaway bill" />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        Text="{Binding BillId}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </WrapPanel>
+                </ScrollViewer>
+            </Border>
+            <Border
+                x:Name="TableLayout"
+                Grid.Row="1"
+                Margin="5"
+                BorderBrush="Black"
+                BorderThickness="1">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsFlipped, ElementName=layoutFlipper}" Value="False">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsFlipped, ElementName=layoutFlipper}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                    <WrapPanel
+                        x:Name="wpTables"
+                        Grid.Row="1"
+                        materialDesign:ElevationAssist.Elevation="Dp16"
+                        Orientation="Horizontal">
+
+                        <WrapPanel.Background>
+                            <ImageBrush ImageSource="E:\Downloads\MyCafeShop_PRN221-main\MyCafeShop_PRN221-main\MyCafeShop\Views\background.png" Stretch="Fill" />
+                        </WrapPanel.Background>
+
+
+                        <ItemsControl x:Name="TableList" ItemsSource="{Binding TablesList, Mode=TwoWay}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <Grid>
+                                        <Grid.Resources>
+                                            <Style TargetType="{x:Type Button}">
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="True">
+                                                        <Setter Property="Background" Value="#FF45BB34" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="False">
+                                                        <Setter Property="Background" Value="#FFCB5E5E" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </Grid.Resources>
+                                        <Button
+                                            x:Name="TableButton"
+                                            Width="145"
+                                            Height="145"
+                                            Margin="10"
+                                            BorderBrush="Black"
+                                            BorderThickness="1"
+                                            Command="{Binding Path=DataContext.TableSelectCommand, ElementName=TableList}"
+                                            CommandParameter="{Binding ElementName=TableButton}"
+                                            Foreground="White">
+
+                                            <Grid>
+                                                <Image Source="\Views\Logo\TableLogo (Custom).png" />
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <StackPanel.Resources>
+
+                                                        <Style BasedOn="{StaticResource MaterialDesignSubtitle1TextBlock}" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Text" Value="Empty" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Status}" Value="True">
+                                                                    <Setter Property="Text" Value="Taken" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+
+
+                                                    </StackPanel.Resources>
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        Text="{Binding Path=Name}" />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </WrapPanel>
+                </ScrollViewer>
+            </Border>
+
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="64*" />
+                <RowDefinition Height="15*" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="200*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Width="140"
+                    Height="140"
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    BorderBrush="{StaticResource Flat3DBorderBrush}"
+                    BorderThickness="2">
+                    <Border.Background>
+                        <ImageBrush ImageSource="/Views/Logo/placeholder (Custom).png" />
+                    </Border.Background>
+
+                    <!--  some content here  -->
+                    <Image
+                        Grid.Row="0"
+                        Source="{Binding SelectedFood.ImgPath}"
+                        Stretch="Fill" />
+
+                </Border>
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="5"
+                    Background="White"
+                    Orientation="Vertical">
+                    <ComboBox
+                        HorizontalContentAlignment="Center"
+                        materialDesign:ComboBoxAssist.MaxLength="2"
+                        materialDesign:HintAssist.Hint="Search"
+                        materialDesign:HintAssist.HintOpacity=".26"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        DisplayMemberPath="Name"
+                        IsEditable="True"
+                        ItemsSource="{Binding CategoriesList, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding SelectedCategory}"
+                        SelectedValuePath="CategoryId"
+                        Style="{StaticResource MaterialDesignComboBox}" />
+
+                    <ListBox
+                        Height="120"
+                        materialDesign:ListBoxItemAssist.ShowSelection="True"
+                        BorderBrush="Black"
+                        BorderThickness="1,0,1,1"
+                        DisplayMemberPath="FoodName"
+                        ItemsSource="{Binding FoodList}"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        SelectedItem="{Binding SelectedFood}"
+                        SelectedValuePath="FoodId"
+                        Style="{StaticResource MaterialDesignNavigationListBox}" />
+                </StackPanel>
+
+                <Grid Grid.Column="2" Margin="5,1,0,1">
+                    <xctk:IntegerUpDown
+                        Width="90"
+                        Height="30"
+                        Margin="0,73,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        BorderBrush="Black"
+                        DefaultValue="0"
+                        FontSize="14"
+                        MaxLength="2"
+                        Maximum="99"
+                        Minimum="1"
+                        Value="{Binding FoodQuantity}" />
+                    <Button
+                        Width="90"
+                        Margin="7,108,7,10"
+                        Background="#FFEBB50B"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Command="{Binding AddItemCommand}"
+                        FontSize="18"
+                        Foreground="Black">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Kind="PlusThick" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="3" Margin="5,1,0,1">
+                    <Button
+                        Width="90"
+                        Margin="7,108,-11,10"
+                        Background="#FFEBB50B"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Command="{Binding SubItemCommand}"
+                        FontSize="18"
+                        Foreground="Black">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Center"
+                            Kind="minus" />
+                    </Button>
+
+                    <Button
+                        Width="90"
+                        Margin="7,71,-11,47"
+                        Background="#FFEBB50B"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Command="{Binding ClearMenuCommand}"
+                        FontSize="18"
+                        Foreground="Black">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Kind="Autorenew" />
+                    </Button>
+                </Grid>
+
+
+            </Grid>
+
+
+
+            <Border
+                Grid.Row="1"
+                Width="auto"
+                Margin="0,0,5,0"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="1">
+                <Grid>
+
+                    <ListView
+                        ItemContainerStyle="{DynamicResource MyItemContainerStyle}"
+                        ItemsSource="{Binding MenuItemList}"
+                        SelectedItem="{Binding SelectedMenuItem}">
+                        <ListView.Background>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="Black" />
+                                <GradientStop Offset="1" Color="White" />
+                            </LinearGradientBrush>
+
+                        </ListView.Background>
+                        <ListView.View>
+
+                            <GridView AllowsColumnReorder="False">
+
+                                <GridViewColumn
+                                    Width="200"
+                                    CellTemplate="{DynamicResource CellTemplateForText}"
+                                    DisplayMemberBinding="{Binding Food.FoodName}"
+                                    Header="Food Name"
+                                    HeaderContainerStyle="{DynamicResource MyHeaderContainerStyle}" />
+                                <GridViewColumn
+                                    Width="60"
+                                    CellTemplate="{DynamicResource CellTemplateForQuantity}"
+                                    DisplayMemberBinding="{Binding Quantity}"
+                                    Header="Quantity"
+                                    HeaderContainerStyle="{DynamicResource MyHeaderContainerStyle}" />
+                                <GridViewColumn
+                                    Width="150"
+                                    CellTemplate="{DynamicResource CellTemplateForText}"
+                                    DisplayMemberBinding="{Binding Price, StringFormat={}{0:n0}đ}"
+                                    Header="Price"
+                                    HeaderContainerStyle="{DynamicResource MyHeaderContainerStyle}" />
+                                <GridViewColumn
+                                    Width="150"
+                                    CellTemplate="{DynamicResource CellTemplateForText}"
+                                    DisplayMemberBinding="{Binding Total, StringFormat={}{0:n0}đ}"
+                                    Header="Total"
+                                    HeaderContainerStyle="{DynamicResource MyHeaderContainerStyle}" />
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1*" />
+
+                </Grid.ColumnDefinitions>
+                <Button
+                    Width="125"
+                    Height="40"
+                    Margin="10,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#FFEBB50B"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    Content="DISCOUNT"
+                    FontFamily="Showcard Gothic"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    IsEnabled="False"
+                    Opacity="1"
+                    ToolTip="MaterialDesignFlatMidButton" />
+                <xctk:IntegerUpDown
+                    x:Name="nmrDiscount"
+                    Canvas.Left="5"
+                    Canvas.Top="58"
+                    Width="123"
+                    Height="30"
+                    Margin="10,59,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    BorderBrush="Black"
+                    DefaultValue="0"
+                    FontSize="14"
+                    FormatString="{}{00}%"
+                    MaxLength="2"
+                    Maximum="99"
+                    Minimum="0"
+                    ShowButtonSpinner="False"
+                    Value="{Binding Discount}" />
+
+                <TextBox
+                    Grid.Column="1"
+                    Width="201"
+                    Height="30"
+                    Margin="10,59,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    AcceptsReturn="True"
+                    Background="#FFFADCB3"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    FontFamily="Cascadia Mono SemiBold"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="#FF20CE25"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                    Text="{Binding Total, StringFormat={}{0:n0}đ}"
+                    TextWrapping="Wrap" />
+                <Button
+                    Grid.Column="1"
+                    Canvas.Left="145"
+                    Canvas.Top="10"
+                    Width="200"
+                    Height="40"
+                    Margin="11,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#FFEBB50B"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    IsEnabled="False"
+                    Opacity="1"
+                    ToolTip="MaterialDesignFlatMidButton">
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="30"
+                            Kind="HandCoin" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="Showcard Gothic"
+                            FontWeight="Normal"
+                            Text="TOTAL PRICE" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Column="2"
+                    Width="150"
+                    Height="74"
+                    Margin="0,15,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    materialDesign:ButtonAssist.CornerRadius="25"
+                    Command="{Binding CheckOutCommand}"
+                    Content="CHECKOUT"
+                    FontFamily="Pristina"
+                    FontSize="23"
+                    FontStretch="Condensed"
+                    FontWeight="ExtraBlack"
+                    Foreground="#DD000000"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}">
+                    <Button.Background>
+                        <LinearGradientBrush SpreadMethod="Reflect" StartPoint="0.3,0" EndPoint="0.5,1">
+
+                            <GradientStop Offset="1" Color="#FFEBB50B" />
+                            <GradientStop Offset="0.294" Color="#FFE9582F" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Grid>
+        </Grid>
+        <StackPanel Grid.ColumnSpan="3" Margin="0,0,545,0" />
     </Grid>
-</Page>
+
+</Window>
