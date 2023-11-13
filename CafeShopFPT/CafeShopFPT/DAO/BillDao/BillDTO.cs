@@ -7,136 +7,103 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.DAO.BillDao
-{
-    public class BillDTO : INotifyPropertyChanged
-    {
+namespace CafeShopFPT.DAO.BillDao {
+    public class BillDTO :INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
         }
 
         private string _billId;
-        public string BillId
-        {
-            get
-            {
+        public string BillId {
+            get {
                 return _billId;
             }
-            set
-            {
+            set {
                 _billId = value; OnPropertyChanged();
             }
         }
         private DateTime _dateCheckIn;
-        public DateTime DateCheckIn
-        {
-            get
-            {
+        public DateTime DateCheckIn {
+            get {
                 return _dateCheckIn;
             }
-            set
-            {
+            set {
                 _dateCheckIn = value; OnPropertyChanged();
             }
         }
         private DateTime? _dateCheckOut;
-        public DateTime? DateCheckOut
-        {
-            get
-            {
+        public DateTime? DateCheckOut {
+            get {
                 return _dateCheckOut;
             }
-            set
-            {
+            set {
                 _dateCheckOut = value; OnPropertyChanged();
             }
         }
         private string _tableId;
-        public string TableId
-        {
-            get
-            {
+        public string TableId {
+            get {
                 return _tableId;
             }
-            set
-            {
+            set {
                 _tableId = value; OnPropertyChanged();
             }
         }
 
         private TableFood _table;
-        public TableFood Table
-        {
-            get
-            {
+        public TableFood Table {
+            get {
                 return _table;
             }
-            set
-            {
+            set {
                 _table = value; OnPropertyChanged();
             }
         }
         private short _status;
-        public short Status
-        {
-            get
-            {
+        public short Status {
+            get {
                 return _status;
             }
-            set
-            {
+            set {
                 _status = value; OnPropertyChanged();
             }
         }
         private byte _discount;
-        public byte Discount
-        {
-            get
-            {
+        public byte Discount {
+            get {
                 return _discount;
             }
-            set
-            {
+            set {
                 _discount = value; OnPropertyChanged();
             }
         }
         private string? _accountId;
-        public string? AccountId
-        {
-            get
-            {
+        public string? AccountId {
+            get {
                 return _accountId;
             }
-            set
-            {
+            set {
                 _accountId = value; OnPropertyChanged();
             }
         }
 
         private Account? _account;
-        public Account? Account
-        {
-            get
-            {
+        public Account? Account {
+            get {
                 return _account;
             }
-            set
-            {
+            set {
                 _account = value; OnPropertyChanged();
             }
         }
         private decimal? _total;
-        public decimal? Total
-        {
-            get
-            {
+        public decimal? Total {
+            get {
                 return _total;
             }
-            set
-            {
+            set {
                 _total = value; OnPropertyChanged();
             }
         }

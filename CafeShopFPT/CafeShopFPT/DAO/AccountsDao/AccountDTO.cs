@@ -1,121 +1,95 @@
-﻿using CafeShopFPT.LogUlti;
+﻿using CafeShopFPT.DAO.RoleDao;
+using CafeShopFPT.LogUlti;
+using CafeShopFPT.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using CafeShopFPT.DAO.RoleDao;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.DAO.AccountsDao
-{
-    public class AccountDTO : INotifyPropertyChanged
-    {
+namespace CafeShopFPT.DAO.AccountsDao {
+    public class AccountDTO : INotifyPropertyChanged{
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
         }
 
         private string _email;
-        public string Email
-        {
-            get
-            {
+        public string Email {
+            get {
                 return _email;
             }
-            set
-            {
+            set {
                 _email = value; OnPropertyChanged();
             }
         }
         private string _displayName;
-        public string DisplayName
-        {
-            get
-            {
+        public string DisplayName {
+            get {
                 return _displayName;
             }
-            set
-            {
+            set {
                 _displayName = value; OnPropertyChanged();
             }
         }
         private string _passWord;
-        public string PassWord
-        {
-            get
-            {
+        public string PassWord {
+            get {
                 return _passWord;
             }
-            set
-            {
+            set {
                 _passWord = value; OnPropertyChanged();
             }
         }
         private int _type;
-        public int Type
-        {
-            get
-            {
+        public int Type {
+            get {
                 return _type;
             }
-            set
-            {
+            set {
                 _type = value; OnPropertyChanged();
             }
         }
 
         private RoleDto _role;
-        public RoleDto Role
-        {
-            get
-            {
+        public RoleDto Role {
+            get {
                 return _role;
             }
-            set
-            {
+            set {
                 _role = value; OnPropertyChanged();
             }
         }
 
         private string _accountId;
-        public string AccountId
-        {
-            get
-            {
+        public string AccountId {
+            get {
                 return _accountId;
             }
-            set
-            {
+            set {
                 _accountId = value; OnPropertyChanged();
             }
         }
         private string? _avatar;
-        public string? Avatar
-        {
-            get
-            {
+        public string? Avatar {
+            get {
                 return _avatar;
             }
-            set
-            {
+            set {
 
-                _avatar = value != null ? FileUlti.GetDestinationPath(value, "Images\\Avatars") : string.Empty; OnPropertyChanged();
+                _avatar = value != null ? FileUlti.GetDestinationPath(value,"Images\\Avatars") : string.Empty; OnPropertyChanged();
             }
         }
 
         private string? _phone;
-        public string? Phone
-        {
-            get
-            {
+        public string? Phone {
+            get {
                 return _phone;
             }
-            set
-            {
+            set {
                 _phone = value; OnPropertyChanged();
             }
         }

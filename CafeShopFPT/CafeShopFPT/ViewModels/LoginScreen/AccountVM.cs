@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ProductCURD01.ViewModel;
+﻿using CafeShopFPT.DAO.AccountsDao;
 using CafeShopFPT.Views;
-using System.Text;
-using CafeShopFPT.DAO.AccountsDao;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using ProductCURD01.ViewModel;
+using System;
+using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace CafeShopFPT.ViewModels.LoginScreen
-{
-    public class AccountVM : BaseVM
-    {
+namespace CafeShopFPT.ViewModels.LoginScreen {
+
+    public class AccountVM :BaseVM {
 
         #region Property
         private Visibility _warningVisiable = Visibility.Hidden;
 
-        public Visibility WarningVisiable
-        {
+        public Visibility WarningVisiable {
             get
                 => _warningVisiable;
 
-            set
-            {
+            set {
                 _warningVisiable = value;
                 OnPropertyChanged();
             }
@@ -31,23 +26,19 @@ namespace CafeShopFPT.ViewModels.LoginScreen
 
         private bool _windowVisiable = true;
 
-        public bool WindowVisiable
-        {
+        public bool WindowVisiable {
             get
                 => _windowVisiable;
 
-            set
-            {
+            set {
                 _windowVisiable = value;
                 OnPropertyChanged();
             }
         }
 
         private string _userName;
-        public string UserName
-        {
-            get => _userName; set
-            {
+        public string UserName {
+            get => _userName; set {
                 _userName = value.Trim();
                 OnPropertyChanged();
 
@@ -55,10 +46,8 @@ namespace CafeShopFPT.ViewModels.LoginScreen
         }
 
         private string _password;
-        public string Password
-        {
-            get => _password; set
-            {
+        public string Password {
+            get => _password; set {
                 _password = value;
                 OnPropertyChanged();
 
@@ -68,49 +57,40 @@ namespace CafeShopFPT.ViewModels.LoginScreen
 
         #region Command
         // Command for login execution.
-        public ICommand LoginCommand
-        {
+        public ICommand LoginCommand {
             get; set;
         }
 
         // Command for exit current login view.
-        public ICommand ExitCommand
-        {
+        public ICommand ExitCommand {
             get; set;
         }
         #endregion
 
 
-        public AccountVM()
-        {
+        public AccountVM() {
 
 
             LoginCommand = new RelayCommand<object>((parameter) => {
 
-                if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
-                {
+                if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)) {
 
                     return false;
 
-                }
-                else
-                {
+                } else {
 
                     return true;
                 }
 
-            }, (parameter) => {
+            },(parameter) => {
                 Window thisWindow = parameter as Window;
 
-                var result = AccountDao.Instance.Authorization(UserName, Password);
-                if (!result)
-                {
+                var result = AccountDao.Instance.Authorization(UserName,Password);
+                if (!result) {
 
                     WarningVisiable = Visibility.Visible;
 
-                }
-                else
-                {
+                } else {
 
                     ManagerView managerView = new ManagerView();
                     managerView.Show();
@@ -123,10 +103,9 @@ namespace CafeShopFPT.ViewModels.LoginScreen
             ExitCommand = new RelayCommand<Window>((parameter) => {
                 return true;
 
-            }, (parameter) => {
+            },(parameter) => {
 
-                if (MessageBox.Show("Do you really want to quit ?", "Exit", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
-                {
+                if (MessageBox.Show("Do you really want to quit ?","Exit",MessageBoxButton.OKCancel,MessageBoxImage.Question) == MessageBoxResult.OK) {
                     parameter?.Close();
                 };
 

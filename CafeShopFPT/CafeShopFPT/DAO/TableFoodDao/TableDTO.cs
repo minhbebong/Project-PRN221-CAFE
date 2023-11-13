@@ -6,62 +6,47 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.DAO.TableFoodDao
-{
-    public class TableDTO : INotifyPropertyChanged
-    {
+namespace CafeShopFPT.DAO.TableFoodDao {
+    public class TableDTO :INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
         }
 
         private string _tableId;
-        public string TableId
-        {
-            get { return _tableId; }
-            set
-            {
+        public string TableId {
+            get { return _tableId;  }
+            set {
                 _tableId = value; OnPropertyChanged();
-            }
-        }
+            } }
 
         private string _name;
-        public string Name
-        {
-            get
-            {
+        public string Name {
+            get {
                 return _name;
             }
-            set
-            {
+            set {
                 _name = value; OnPropertyChanged();
             }
         }
 
         private bool _status;
-        public bool Status
-        {
-            get
-            {
+        public bool Status {
+            get {
                 return _status;
             }
-            set
-            {
+            set {
                 _status = value; OnPropertyChanged();
             }
         }
 
         private bool? _inUse;
-        public bool? InUse
-        {
-            get
-            {
+        public bool? InUse {
+            get {
                 return _inUse;
             }
-            set
-            {
+            set {
                 _inUse = value; OnPropertyChanged();
             }
         }
