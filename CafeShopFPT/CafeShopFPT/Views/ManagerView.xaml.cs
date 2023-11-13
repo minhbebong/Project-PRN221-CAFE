@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace CafeShopFPT.Views
         public ManagerView()
         {
             InitializeComponent();
+            this.DataContext = new ManagerVM();
         }
     }
 }
