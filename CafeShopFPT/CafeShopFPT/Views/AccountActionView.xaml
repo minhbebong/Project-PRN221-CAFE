@@ -12,7 +12,7 @@
     Title="AccountActionView"
     Width="1000"
     Height="520"
-    Icon="/Views/Logo/icon.png"
+    Icon="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Views\icon.png"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
