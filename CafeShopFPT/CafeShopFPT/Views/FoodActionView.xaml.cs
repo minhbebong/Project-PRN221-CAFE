@@ -1,4 +1,5 @@
-﻿using CafeShopFPT.ViewModels.AdminScreen;
+﻿using CafeShopFPT.DAO.FoodDao;
+using CafeShopFPT.ViewModels.AdminScreen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,19 @@ using System.Windows.Shapes;
 namespace CafeShopFPT.Views
 {
     /// <summary>
-    /// Interaction logic for CategoryActionView.xaml
+    /// Interaction logic for FoodActionView.xaml
     /// </summary>
-    public partial class CategoryActionView : Window
+    public partial class FoodActionView : Window
     {
-        public CategoryActionView(string categoryId)
+
+        public FoodActionView() {
+            InitializeComponent();
+            this.DataContext = new FoodActionVM(null);
+        }
+        public FoodActionView(FoodDTO food)
         {
             InitializeComponent();
-            this.DataContext = new CategoryActionVM(categoryId);
+            this.DataContext = new FoodActionVM(food);
         }
     }
 }

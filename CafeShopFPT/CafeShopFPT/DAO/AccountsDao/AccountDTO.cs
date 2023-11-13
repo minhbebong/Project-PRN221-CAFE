@@ -103,7 +103,7 @@ namespace CafeShopFPT.DAO.AccountsDao
             set
             {
 
-                _avatar = value != null ? FileUtil.GetDestinationPath(value, "Images\\Avatars") : string.Empty; OnPropertyChanged();
+                _avatar = value != null ? FileUlti.GetDestinationPath(value, "Images\\Avatars") : string.Empty; OnPropertyChanged();
             }
         }
 

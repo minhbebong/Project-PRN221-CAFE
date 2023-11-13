@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CafeShopFPT.Views
@@ -18,7 +17,7 @@ namespace CafeShopFPT.Views
     /// <summary>
     /// Interaction logic for ConfirmPasswordView.xaml
     /// </summary>
-    public partial class ConfirmPasswordView : Page
+    public partial class ConfirmPasswordView : Window
     {
         public ConfirmPasswordView()
         {

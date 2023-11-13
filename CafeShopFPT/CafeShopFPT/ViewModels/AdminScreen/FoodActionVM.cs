@@ -260,7 +260,7 @@ namespace CafeShopFPT.ViewModels.AdminScreen
                     // Open document
                     string filepath = dlg.FileName; // Stores Original Path in Textbox
                     string name = System.IO.Path.GetFileName(filepath);
-                    string destinationPath = FileUtil.GetDestinationPath(name, "Images\\Foods");
+                    string destinationPath = FileUlti.GetDestinationPath(name, "Images\\Foods");
 
                     File.Copy(filepath, destinationPath, true);
 

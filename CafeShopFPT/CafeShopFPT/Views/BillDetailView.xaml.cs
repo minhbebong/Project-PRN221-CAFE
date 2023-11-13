@@ -1,27 +1,13 @@
-﻿using CafeShopFPT.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CafeShopFPT.ViewModels.BillDetailScreen;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CafeShopFPT.Views
-{
+namespace CafeShopFPT.Views {
     /// <summary>
     /// Interaction logic for BillDetailView.xaml
     /// </summary>
-    public partial class BillDetailView : Page
+    public partial class BillDetailView : Window
     {
-        public BillDetailView()
+        public BillDetailView(string billId)
         {
             InitializeComponent();
             this.DataContext = new BillDetailVM(billId);
