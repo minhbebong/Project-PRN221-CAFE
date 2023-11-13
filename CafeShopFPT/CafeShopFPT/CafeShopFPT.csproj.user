@@ -33,9 +33,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\AccountActionView.xaml">
       <SubType>Designer</SubType>
     </Page>

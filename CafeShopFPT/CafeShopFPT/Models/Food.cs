@@ -14,7 +14,7 @@ namespace CafeShopFPT.Models
         public string FoodName { get; set; } = null!;
         public string CategoryId { get; set; } = null!;
         public decimal Price { get; set; }
-        public string ImgPath { get; set; }
+        public string? ImgPath { get; set; }
 
         public virtual Category Category { get; set; } = null!;
         public virtual ICollection<BillInfo> BillInfos { get; set; }

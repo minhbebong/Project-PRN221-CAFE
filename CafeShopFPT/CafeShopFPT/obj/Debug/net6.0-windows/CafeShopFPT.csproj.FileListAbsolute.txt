@@ -1,5 +1,4 @@
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT.csproj.AssemblyReference.cache
-E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\MainWindow.g.cs
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\App.g.cs
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT_MarkupCompile.cache
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT_MarkupCompile.lref
@@ -79,7 +78,6 @@ E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\bin\Debug\net6.0
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\bin\Debug\net6.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\bin\Debug\net6.0-windows\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\App.baml
-E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\MainWindow.baml
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT.g.resources
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT.GeneratedMSBuildEditorConfig.editorconfig
 E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\obj\Debug\net6.0-windows\CafeShopFPT.AssemblyInfoInputs.cache

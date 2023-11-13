@@ -15,8 +15,8 @@ namespace CafeShopFPT.Models
         public string PassWord { get; set; } = null!;
         public int Type { get; set; }
         public string AccountId { get; set; } = null!;
-        public string Avatar { get; set; }
-        public string Phone { get; set; }
+        public string? Avatar { get; set; }
+        public string? Phone { get; set; }
 
         public virtual Role TypeNavigation { get; set; } = null!;
         public virtual ICollection<Bill> Bills { get; set; }

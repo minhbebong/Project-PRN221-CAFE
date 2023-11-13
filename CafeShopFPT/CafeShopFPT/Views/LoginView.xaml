@@ -9,7 +9,7 @@
     Title="LoginView"
     Width="500"
     Height="450"
-    Icon="/Views/Logo/icon.png"
+    Icon="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Views\icon.png"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
