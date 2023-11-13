@@ -4,36 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.Models
-{
-    public class DataProvider
-    {
+namespace CafeShopFPT.Models {
+    public class DataProvider {
         private static DataProvider _ins;
-        public static DataProvider Ins
-        {
-            get
-            {
+        public static DataProvider Ins {
+            get {
                 if (_ins == null)
                     _ins = new DataProvider();
                 return _ins;
             }
-            set
-            {
+            set {
                 _ins = value;
             }
         }
 
-        public QuanLyQuanCafeContext DB
-        {
+        public QuanLyQuanCafeContext DB {
             get; set;
         }
-        public DataProvider()
-        {
+        public DataProvider() {
             DB = new QuanLyQuanCafeContext();
         }
 
-        public bool SaveChanges()
-        {
+        public bool SaveChanges() {
             DB.SaveChanges();
             return true;
         }

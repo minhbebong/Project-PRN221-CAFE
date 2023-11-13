@@ -6,65 +6,50 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CafeShopFPT.ViewModels.AdminScreen
-{
-    public class CategoryActionVM : BaseVM
-    {
+namespace CafeShopFPT.ViewModels.AdminScreen {
+    public class CategoryActionVM :BaseVM {
 
         #region Property
         private string categoryId;
 
         private ObservableCollection<FoodDTO> _currentCategoryFoodList;
-        public ObservableCollection<FoodDTO> CurrentCategoryFoodList
-        {
-            get
-            {
+        public ObservableCollection<FoodDTO> CurrentCategoryFoodList {
+            get {
                 return _currentCategoryFoodList;
             }
-            set
-            {
+            set {
                 _currentCategoryFoodList = value; OnPropertyChanged();
             }
         }
 
         private ObservableCollection<FoodDTO> _selectCategoryFoodList;
-        public ObservableCollection<FoodDTO> SelectCategoryFoodList
-        {
-            get
-            {
+        public ObservableCollection<FoodDTO> SelectCategoryFoodList {
+            get {
                 return _selectCategoryFoodList;
             }
-            set
-            {
+            set {
                 _selectCategoryFoodList = value; OnPropertyChanged();
             }
         }
 
         private ObservableCollection<CategoryDTO> _categoriesList;
-        public ObservableCollection<CategoryDTO> CategoriesList
-        {
-            get
-            {
+        public ObservableCollection<CategoryDTO> CategoriesList {
+            get {
                 return _categoriesList;
             }
-            set
-            {
+            set {
                 _categoriesList = value; OnPropertyChanged();
             }
         }
 
         private CategoryDTO _selectedCategory;
-        public CategoryDTO SelectedCategory
-        {
-            get
-            {
+        public CategoryDTO SelectedCategory {
+            get {
                 return _selectedCategory;
             }
-            set
-            {
+            set {
                 _selectedCategory = value; OnPropertyChanged();
-                if (SelectedCategory != null)
-                {
+                if (SelectedCategory != null) {
                     LoadSelectFoodData(SelectedCategory.CategoryId);
                 }
 
@@ -75,14 +60,11 @@ namespace CafeShopFPT.ViewModels.AdminScreen
 
 
         private string _title;
-        public string Title
-        {
-            get
-            {
+        public string Title {
+            get {
                 return _title;
             }
-            set
-            {
+            set {
                 _title = value;
             }
         }
@@ -90,58 +72,48 @@ namespace CafeShopFPT.ViewModels.AdminScreen
 
 
         private string _selectedCategoryName;
-        public string SelectedCategoryName
-        {
-            get
-            {
+        public string SelectedCategoryName {
+            get {
                 return _selectedCategoryName;
             }
-            set
-            {
+            set {
                 _selectedCategoryName = value;
             }
         }
         #endregion
 
         #region Function
-        private void LoadCategoriesData()
-        {
+        private void LoadCategoriesData() {
             var list = CategoryDao.Instance.LoadAllCategories();
             var category = list.Where(x => x.CategoryId.Equals(this.categoryId)).FirstOrDefault();
-            if (category != null)
-            {
+            if ( category != null) {
                 SelectedCategoryName = category.Name;
             }
             CategoriesList = new ObservableCollection<CategoryDTO>(list.Where(x => !x.CategoryId.Equals(categoryId)));
         }
 
-        private void LoadCurrentFoodData()
-        {
+        private void LoadCurrentFoodData() {
             CurrentCategoryFoodList = new ObservableCollection<FoodDTO>(FoodDao.Instance.LoadAllFoodByCategoryId(this.categoryId));
 
         }
 
-        private void LoadSelectFoodData(string selectCategoryId)
-        {
+        private void LoadSelectFoodData(string selectCategoryId) {
             SelectCategoryFoodList = new ObservableCollection<FoodDTO>(FoodDao.Instance.LoadAllFoodByCategoryId(selectCategoryId));
 
         }
         #endregion
 
         #region Command
-        public ICommand AddCommand
-        {
+        public ICommand AddCommand {
             get; set;
         }
-        public ICommand RemoveCommand
-        {
+        public ICommand RemoveCommand {
             get; set;
         }
         #endregion
 
 
-        public CategoryActionVM(string categoryId)
-        {
+        public CategoryActionVM(string categoryId) {
             this.categoryId = categoryId;
             LoadCategoriesData();
             LoadCurrentFoodData();
@@ -149,21 +121,19 @@ namespace CafeShopFPT.ViewModels.AdminScreen
 
 
             AddCommand = new RelayCommand<object>((p) => {
-                if (SelectedCategory != null)
-                {
+                if (SelectedCategory != null) {
                     return true;
                 }
                 return false;
 
-            }, (p) => {
+            },(p) => {
                 ListView listView = (ListView)p;
                 System.Collections.IList items = (System.Collections.IList)listView.SelectedItems;
                 var collection = items.Cast<FoodDTO>();
 
 
-                foreach (var food in collection)
-                {
-                    FoodDao.Instance.UpdateFoodCategory(this.categoryId, food.FoodId);
+                foreach (var food in collection) {
+                    FoodDao.Instance.UpdateFoodCategory(this.categoryId,food.FoodId);
                 }
                 LoadCurrentFoodData();
                 LoadSelectFoodData(SelectedCategory.CategoryId);
@@ -171,20 +141,18 @@ namespace CafeShopFPT.ViewModels.AdminScreen
             });
 
             RemoveCommand = new RelayCommand<object>((p) => {
-                if (SelectedCategory != null)
-                {
+                if (SelectedCategory != null) {
                     return true;
                 }
                 return false;
 
-            }, (p) => {
+            },(p) => {
                 ListView listView = (ListView)p;
                 System.Collections.IList items = (System.Collections.IList)listView.SelectedItems;
                 var collection = items.Cast<FoodDTO>();
 
-                foreach (var food in collection)
-                {
-                    FoodDao.Instance.UpdateFoodCategory(SelectedCategory.CategoryId, food.FoodId);
+                foreach (var food in collection) {
+                    FoodDao.Instance.UpdateFoodCategory(SelectedCategory.CategoryId,food.FoodId);
                 }
                 LoadCurrentFoodData();
                 LoadSelectFoodData(SelectedCategory.CategoryId);

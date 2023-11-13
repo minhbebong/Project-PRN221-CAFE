@@ -7,20 +7,28 @@ using System.Threading.Tasks;
 
 namespace CafeShopFPT.LogUlti
 {
-    public class ImageToByte
+   public class ImageToByte
     {
-        public byte[] ReadFile(string sPath)
-        {
-            //Tao mang byte voi gia tri null ban dau
+      public  byte[] ReadFile(string sPath) {
+            //Initialize byte array with a null value initially.
             byte[] data = null;
-            //            Sử dụng đối tượng FileInfo để lấy kích thước tệp.
+
+            //Use FileInfo object to get file size.
             FileInfo fInfo = new FileInfo(sPath);
             long numBytes = fInfo.Length;
-            //            Mở FileStream để đọc tệp
-            FileStream fStream = new FileStream(sPath, FileMode.Open, FileAccess.Read);
-            //            Sử dụng BinaryReader để đọc luồng tệp vào mảng byte.
+
+            //Open FileStream to read file
+            FileStream fStream = new FileStream(sPath,FileMode.Open,FileAccess.Read);
+
+            //Use BinaryReader to read file stream into byte array.
             BinaryReader br = new BinaryReader(fStream);
+
+            //When you use BinaryReader, you need to supply number of bytes
+            //to read from file.
+            //In this case we want to read entire file.
+            //So supplying total number of bytes.
             data = br.ReadBytes((int)numBytes);
+
             return data;
         }
     }

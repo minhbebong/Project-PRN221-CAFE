@@ -11,7 +11,7 @@
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=adminscreen:AdminVM}"
-    Icon="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Views\icon.png"
+    Icon="/Views/Logo/icon.png"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"

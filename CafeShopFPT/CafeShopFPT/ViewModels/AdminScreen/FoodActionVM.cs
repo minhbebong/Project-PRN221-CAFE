@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using CafeShopFPT.DAO.CategoryDao;
+using CafeShopFPT.DAO.FoodDao;
 using ProductCURD01.ViewModel;
 using System;
 using System.Collections.ObjectModel;
@@ -9,53 +11,40 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Diagnostics;
 using System.IO;
-using DocumentFormat.OpenXml.Wordprocessing;
-using CafeShopFPT.DAO.CategoryDao;
-using CafeShopFPT.DAO.FoodDao;
 using CafeShopFPT.LogUlti;
+using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace CafeShopFPT.ViewModels.AdminScreen
-{
-    public class FoodActionVM : BaseVM
-    {
+namespace CafeShopFPT.ViewModels.AdminScreen {
+    public class FoodActionVM :BaseVM {
 
         #region Property
         private ObservableCollection<CategoryDTO> _categoriesList;
-        public ObservableCollection<CategoryDTO> CategoriesList
-        {
-            get
-            {
+        public ObservableCollection<CategoryDTO> CategoriesList {
+            get {
                 return _categoriesList;
             }
-            set
-            {
+            set {
                 _categoriesList = value; OnPropertyChanged();
             }
         }
 
         private CategoryDTO _selectedCategory;
-        public CategoryDTO SelectedCategory
-        {
-            get
-            {
+        public CategoryDTO SelectedCategory {
+            get {
                 return _selectedCategory;
             }
-            set
-            {
+            set {
                 _selectedCategory = value; OnPropertyChanged();
 
             }
         }
 
         private string _foodName;
-        public string FoodName
-        {
-            get
-            {
+        public string FoodName {
+            get {
                 return _foodName;
             }
-            set
-            {
+            set {
                 _foodName = value; OnPropertyChanged();
 
 
@@ -63,14 +52,11 @@ namespace CafeShopFPT.ViewModels.AdminScreen
         }
 
         private FoodDTO _updatedFood;
-        public FoodDTO UpdatedFood
-        {
-            get
-            {
+        public FoodDTO UpdatedFood {
+            get {
                 return _updatedFood;
             }
-            set
-            {
+            set {
                 _updatedFood = value;
 
 
@@ -78,14 +64,11 @@ namespace CafeShopFPT.ViewModels.AdminScreen
         }
 
         private string _foodImgPath;
-        public string FoodImgPath
-        {
-            get
-            {
+        public string FoodImgPath {
+            get {
                 return _foodImgPath;
             }
-            set
-            {
+            set {
                 _foodImgPath = value; OnPropertyChanged();
 
 
@@ -93,14 +76,11 @@ namespace CafeShopFPT.ViewModels.AdminScreen
         }
 
         private decimal _foodPrice;
-        public decimal FoodPrice
-        {
-            get
-            {
+        public decimal FoodPrice {
+            get {
                 return _foodPrice;
             }
-            set
-            {
+            set {
                 _foodPrice = value; OnPropertyChanged();
 
 
@@ -111,14 +91,12 @@ namespace CafeShopFPT.ViewModels.AdminScreen
 
 
         #region Function
-        private void LoadCategoriesData()
-        {
+        private void LoadCategoriesData() {
             CategoriesList = new ObservableCollection<CategoryDTO>(CategoryDao.Instance.LoadAllCategories());
         }
 
 
-        private void LoadFoodData(FoodDTO food)
-        {
+        private void LoadFoodData(FoodDTO food) {
 
             FoodName = food.FoodName;
             FoodPrice = food.Price;
@@ -131,51 +109,42 @@ namespace CafeShopFPT.ViewModels.AdminScreen
 
 
         #region Command
-        public ICommand UploadFoodImageCommand
-        {
+        public ICommand UploadFoodImageCommand {
             get; set;
         }
 
-        public ICommand ResetFoodCommand
-        {
+        public ICommand ResetFoodCommand {
             get; set;
         }
 
 
-        public ICommand SaveFoodCommand
-        {
+        public ICommand SaveFoodCommand {
             get; set;
         }
         #endregion
 
 
 
-        public FoodActionVM(FoodDTO? food)
-        {
+        public FoodActionVM(FoodDTO? food) {
             LoadCategoriesData();
 
             var currFood = food;
-            if (food != null)
-            {
+            if (food != null) {
                 LoadFoodData(currFood);
 
             }
 
 
             ResetFoodCommand = new RelayCommand<object>((p) => {
-                if (!string.IsNullOrEmpty(FoodName) || SelectedCategory != null)
-                {
+                if (!string.IsNullOrEmpty(FoodName) || SelectedCategory != null) {
                     return true;
                 }
                 return false;
 
-            }, (p) => {
-                if (currFood != null)
-                {
+            },(p) => {
+                if (currFood != null) {
                     LoadFoodData(currFood);
-                }
-                else
-                {
+                } else {
                     FoodName = null;
                     SelectedCategory = null;
                     FoodPrice = 0;
@@ -186,20 +155,17 @@ namespace CafeShopFPT.ViewModels.AdminScreen
             });
 
             SaveFoodCommand = new RelayCommand<object>((p) => {
-                if (!string.IsNullOrEmpty(FoodName) || SelectedCategory != null)
-                {
+                if (!string.IsNullOrEmpty(FoodName) || SelectedCategory != null) {
                     return true;
                 }
                 return false;
 
-            }, (p) => {
+            },(p) => {
 
                 Window thisWindow = p as Window;
-                if (food != null)
-                {
+                if (food != null) {
 
-                    UpdatedFood = new FoodDTO
-                    {
+                    UpdatedFood = new FoodDTO {
 
                         CategoryId = SelectedCategory.CategoryId,
                         FoodId = food.FoodId,
@@ -209,31 +175,23 @@ namespace CafeShopFPT.ViewModels.AdminScreen
                     };
 
                     var updateFoodReuslt = FoodDao.Instance.UpdateFood(UpdatedFood);
-                    if (updateFoodReuslt)
-                    {
-                        MessageBox.Show("Update food successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Update food fail!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (updateFoodReuslt) {
+                        MessageBox.Show("Update food successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
+                    } else {
+                        MessageBox.Show("Update food fail!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
                     }
 
 
-                }
-                else
-                {
+                } else {
 
 
                     var maxFoodId = FoodDao.Instance.GetFoodIdMax();
 
-                    var addFoodReuslt = FoodDao.Instance.AddFood(maxFoodId, FoodName, SelectedCategory.CategoryId, FoodPrice, FoodImgPath);
-                    if (addFoodReuslt)
-                    {
-                        MessageBox.Show("Add food successfully!", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Add food fail!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var addFoodReuslt = FoodDao.Instance.AddFood(maxFoodId,FoodName,SelectedCategory.CategoryId,FoodPrice,FoodImgPath);
+                    if (addFoodReuslt) {
+                        MessageBox.Show("Add food successfully!","Notification",MessageBoxButton.OK,MessageBoxImage.Information);
+                    } else {
+                        MessageBox.Show("Add food fail!","Error",MessageBoxButton.OK,MessageBoxImage.Error);
                     }
 
                 }
@@ -244,7 +202,7 @@ namespace CafeShopFPT.ViewModels.AdminScreen
             UploadFoodImageCommand = new RelayCommand<object>((p) => {
                 return true;
 
-            }, (p) => {
+            },(p) => {
                 // Create OpenFileDialog
                 OpenFileDialog dlg = new OpenFileDialog();
 
@@ -255,16 +213,15 @@ namespace CafeShopFPT.ViewModels.AdminScreen
                 // Display OpenFileDialog by calling ShowDialog method
                 Nullable<bool> result = dlg.ShowDialog();
 
-                if (result == true)
-                {
+                if (result == true) {
                     // Open document
                     string filepath = dlg.FileName; // Stores Original Path in Textbox
                     string name = System.IO.Path.GetFileName(filepath);
-                    string destinationPath = FileUlti.GetDestinationPath(name, "Images\\Foods");
+                    string destinationPath = FileUlti.GetDestinationPath(name,"Images\\Foods");
 
-                    File.Copy(filepath, destinationPath, true);
+                    File.Copy(filepath,destinationPath,true);
 
-                    FoodImgPath = destinationPath;
+                    FoodImgPath= destinationPath;
 
 
                 }

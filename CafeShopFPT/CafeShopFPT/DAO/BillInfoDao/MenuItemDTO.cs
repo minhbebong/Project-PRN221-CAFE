@@ -7,65 +7,50 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.DAO.BillInfoDao
-{
-    public class MenuItemDTO : INotifyPropertyChanged
-    {
+namespace CafeShopFPT.DAO.BillInfoDao {
+    public class MenuItemDTO :INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
         }
 
         private FoodDTO _food;
-        public FoodDTO Food
-        {
-            get
-            {
+        public FoodDTO Food {
+            get {
                 return _food;
             }
-            set
-            {
+            set {
                 _food = value; OnPropertyChanged();
             }
         }
 
         private short _quantity;
-        public short Quantity
-        {
-            get
-            {
+        public short Quantity {
+            get {
                 return _quantity;
             }
-            set
-            {
+            set {
                 _quantity = value; OnPropertyChanged();
             }
         }
 
         private decimal _price;
-        public decimal Price
-        {
-            get
-            {
+        public decimal Price {
+            get {
                 return _price;
             }
-            set
-            {
+            set {
                 _price = value; OnPropertyChanged();
             }
         }
 
         private decimal _total;
-        public decimal Total
-        {
-            get
-            {
+        public decimal Total {
+            get {
                 return _total;
             }
-            set
-            {
+            set {
                 _total = value; OnPropertyChanged();
             }
         }

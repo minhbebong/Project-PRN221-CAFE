@@ -6,39 +6,30 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeShopFPT.DAO.CategoryDao
-{
-    public class CategoryDTO : INotifyPropertyChanged
-    {
+namespace CafeShopFPT.DAO.CategoryDao {
+    public class CategoryDTO :INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
         }
 
         private string _categoryId;
-        public string CategoryId
-        {
-            get
-            {
+        public string CategoryId {
+            get {
                 return _categoryId;
             }
-            set
-            {
+            set {
                 _categoryId = value; OnPropertyChanged();
             }
         }
 
         private string _name;
-        public string Name
-        {
-            get
-            {
+        public string Name {
+            get {
                 return _name;
             }
-            set
-            {
+            set {
                 _name = value; OnPropertyChanged();
             }
         }

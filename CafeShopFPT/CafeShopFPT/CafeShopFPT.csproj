@@ -8,20 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DAO\BillDao\" />
-    <Folder Include="DAO\BillInfoDao\" />
-    <Folder Include="DAO\CategoryDao\" />
-    <Folder Include="DAO\FoodDao\" />
-    <Folder Include="DAO\TableFoodDao\" />
-    <Folder Include="DAO\RoleDao\" />
-    <Folder Include="ViewModels\AccountAction\" />
-    <Folder Include="ViewModels\AdminScreen\" />
-    <Folder Include="ViewModels\BillDetailScreen\" />
-    <Folder Include="ViewModels\LoginScreen\" />
-    <Folder Include="ViewModels\ManagerScreen\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="ClosedXML" Version="0.100.3" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />

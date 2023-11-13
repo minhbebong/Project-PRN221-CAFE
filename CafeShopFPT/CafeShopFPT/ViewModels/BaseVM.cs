@@ -1,7 +1,6 @@
 ﻿
 
-namespace ProductCURD01.ViewModel
-{
+namespace ProductCURD01.ViewModel {
 
     using System;
     using System.ComponentModel;
@@ -12,8 +11,7 @@ namespace ProductCURD01.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
@@ -30,8 +28,7 @@ namespace ProductCURD01.ViewModel
             _execute = execute;
         }
 
-        public bool CanExecute(object parameter)
-        {
+        public bool CanExecute(object parameter) {
             try
             {
                 return _canExecute == null || _canExecute((T)parameter);

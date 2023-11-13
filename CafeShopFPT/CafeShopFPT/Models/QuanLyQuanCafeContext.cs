@@ -28,11 +28,10 @@ namespace CafeShopFPT.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
+            if (!optionsBuilder.IsConfigured) {
                 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    .AddJsonFile("appsettings.json",optional: false,reloadOnChange: true);
 
                 IConfigurationRoot configuration = builder.Build();
 
@@ -53,12 +52,10 @@ namespace CafeShopFPT.Models
                     .IsFixedLength();
 
                 entity.Property(e => e.DisplayName)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .HasDefaultValueSql("(N'New User')");
 
                 entity.Property(e => e.PassWord)
-                    .IsRequired()
                     .HasMaxLength(1000)
                     .HasDefaultValueSql("((0))");
 
@@ -66,9 +63,7 @@ namespace CafeShopFPT.Models
                     .HasMaxLength(13)
                     .IsFixedLength();
 
-                entity.Property(e => e.UserName)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.UserName).HasMaxLength(100);
 
                 entity.HasOne(d => d.TypeNavigation)
                     .WithMany(p => p.Accounts)
@@ -104,7 +99,7 @@ namespace CafeShopFPT.Models
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Bills)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__Bill__AccountId__37A5467C");
+                    .HasConstraintName("FK__Bill__AccountId__4E88ABD4");
 
                 entity.HasOne(d => d.Table)
                     .WithMany(p => p.Bills)
@@ -118,13 +113,11 @@ namespace CafeShopFPT.Models
                 entity.ToTable("BillInfo");
 
                 entity.Property(e => e.BillId)
-                    .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .IsFixedLength();
 
                 entity.Property(e => e.FoodId)
-                    .IsRequired()
                     .HasMaxLength(5)
                     .IsUnicode(false)
                     .IsFixedLength();
@@ -145,9 +138,7 @@ namespace CafeShopFPT.Models
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.Name).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Food>(entity =>
@@ -160,14 +151,11 @@ namespace CafeShopFPT.Models
                     .IsFixedLength();
 
                 entity.Property(e => e.CategoryId)
-                    .IsRequired()
                     .HasMaxLength(5)
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.FoodName)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.FoodName).HasMaxLength(100);
 
                 entity.Property(e => e.ImgPath).HasColumnType("text");
 
@@ -187,7 +175,6 @@ namespace CafeShopFPT.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Name)
-                    .IsRequired()
                     .HasMaxLength(10)
                     .IsFixedLength();
             });
@@ -195,7 +182,7 @@ namespace CafeShopFPT.Models
             modelBuilder.Entity<TableFood>(entity =>
             {
                 entity.HasKey(e => e.TableId)
-                    .HasName("PK__TableFoo__7D5F01EE39D83D66");
+                    .HasName("PK__TableFoo__7D5F01EE8BA19403");
 
                 entity.ToTable("TableFood");
 
@@ -204,9 +191,7 @@ namespace CafeShopFPT.Models
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.Name).HasMaxLength(100);
             });
 
             OnModelCreatingPartial(modelBuilder);

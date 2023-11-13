@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CafeShopFPT.LogUlti"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:CafeShopFPT.ViewModels"
     x:Name="LoginWindow"
     Title="LoginView"
     Width="500"
@@ -24,7 +26,7 @@
         <Image
             Width="450"
             Height="200"
-               Source="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Image\Logo\logo.png" />
+               Source="E:\Downloads\MyCafeShop_PRN221-main\MyCafeShop_PRN221-main\MyCafeShop\Image\Logo\logo.png" />
         <Line
             Width="480"
             Height="5"

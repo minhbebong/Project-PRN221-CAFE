@@ -1,14 +1,14 @@
-﻿using ProductCURD01.ViewModel;
+﻿using CafeShopFPT.DAO.AccountsDao;
+using ProductCURD01.ViewModel;
 using System;
 using System.Windows;
 using System.Collections.ObjectModel;
+using CafeShopFPT.DAO.RoleDao;
 using System.Windows.Input;
 using Microsoft.Win32;
 using DocumentFormat.OpenXml;
-using System.IO;
-using CafeShopFPT.DAO.AccountsDao;
-using CafeShopFPT.DAO.RoleDao;
 using CafeShopFPT.LogUlti;
+using System.IO;
 
 namespace CafeShopFPT.ViewModels.AccountAction
 {
@@ -208,14 +208,13 @@ namespace CafeShopFPT.ViewModels.AccountAction
                 // Open document
                 SelectAccount.Avatar = dlg.FileName;
 
-                if (result == true)
-                {
+                if (result == true) {
                     // Open document
                     string filepath = dlg.FileName; // Stores Original Path in Textbox
                     string name = System.IO.Path.GetFileName(filepath);
-                    string destinationPath = FileUlti.GetDestinationPath(name, "Images\\Avatars");
+                    string destinationPath = FileUlti.GetDestinationPath(name,"Images\\Avatars");
 
-                    File.Copy(filepath, destinationPath, true);
+                    File.Copy(filepath,destinationPath,true);
 
                     SelectAccount.Avatar = name;
                 }
