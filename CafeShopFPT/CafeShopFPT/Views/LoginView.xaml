@@ -24,7 +24,7 @@
         <Image
             Width="450"
             Height="200"
-               Source="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Views\background.png" />
+               Source="E:\Documents\GitHub\Project-PRN221-CAFE\CafeShopFPT\CafeShopFPT\Image\Logo\logo.png" />
         <Line
             Width="480"
             Height="5"
